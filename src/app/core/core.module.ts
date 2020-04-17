@@ -9,21 +9,19 @@ import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router
 import { CustomSerializer } from './store-app/custom-route-serializer';
 import { NetworkErrorInterceptor } from './interceptors';
 import { EffectsModule } from '@ngrx/effects';
-import { TranslocoRootModule } from '../transloco/transloco-root.module';
 
 @NgModule({
   imports: [
     BrowserAnimationsModule,
     HttpClientModule,
-    TranslocoRootModule,
     StoreModule.forRoot(reducers, {
       metaReducers,
-      runtimeChecks: { strictStateImmutability: true, strictActionImmutability: true }
+      runtimeChecks: { strictStateImmutability: true, strictActionImmutability: true },
     }),
     !environment.production
       ? StoreDevtoolsModule.instrument({
           maxAge: 25, // Returns last 25 states
-          logOnly: environment.production // Boolean. Restricts to log only depending on env
+          logOnly: environment.production, // Boolean. Restricts to log only depending on env
         })
       : [],
     StoreRouterConnectingModule.forRoot({ stateKey: 'router' }),
@@ -32,7 +30,7 @@ import { TranslocoRootModule } from '../transloco/transloco-root.module';
   // Interceptors and global services here
   providers: [
     { provide: RouterStateSerializer, useClass: CustomSerializer },
-    { provide: HTTP_INTERCEPTORS, useClass: NetworkErrorInterceptor, multi: true }
-  ]
+    { provide: HTTP_INTERCEPTORS, useClass: NetworkErrorInterceptor, multi: true },
+  ],
 })
 export class CoreModule {}

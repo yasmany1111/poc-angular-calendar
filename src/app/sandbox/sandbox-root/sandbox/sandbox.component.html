@@ -1,14 +1,28 @@
-<ng-container *transloco="let text; read: 'NAV_BAR'">
-  <p>
-    sandbox works!
-  </p>
-  <button type="button" mat-raised-button color="primary" (click)="testAction()">
-    {{ text('BTN_TEST') }}
-  </button>
+<div class="alert alert-info">
+  For details on how to customise any of the templates, please see
+  <a href="https://github.com/mattlewis92/angular-calendar#how-do-i-use-a-custom-template"
+    >this guide</a
+  >
+</div>
 
-  <p>{{ textToTranslate }}</p>
+<ng-template #customCellTemplate let-day="day" let-locale="locale">
+  <div class="cal-cell-top">
+    <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">{{ day.badgeTotal }}</span>
+    <span class="cal-day-number">{{ day.date | calendarDate: 'monthViewDayNumber':locale }}</span>
+  </div>
+  <small style="margin: 5px; color: lime;">We can change this as :<span style="color: blue; font-size: bold;">and add views as other calendars</span> html{{ day.events.length }} events on this day</small>
+</ng-template>
 
-  <button type="button" mat-raised-button color="primary" (click)="translateProgrammatically()">
-    Translate text
-  </button>
-</ng-container>
+<div [ngSwitch]="view">
+  <mwl-calendar-month-view
+    *ngSwitchCase="'month'"
+    [viewDate]="viewDate"
+    [events]="events"
+    [cellTemplate]="customCellTemplate"
+  >
+  </mwl-calendar-month-view>
+  <mwl-calendar-week-view *ngSwitchCase="'week'" [viewDate]="viewDate" [events]="events">
+  </mwl-calendar-week-view>
+  <mwl-calendar-day-view *ngSwitchCase="'day'" [viewDate]="viewDate" [events]="events">
+  </mwl-calendar-day-view>
+</div>
